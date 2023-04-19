@@ -20,12 +20,12 @@ import com.google.firebase.storage.StorageReference;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    TextView detailDesc, detailTitle, detailLang;
+    TextView detailId, detailTitle, detailLang;
     ImageView detailImage;
     FloatingActionButton deleteButton, editButton;
     String key = "";
     String apellido, nombre, fecha;
-    int id;
+    String id;
     String imageUrl = "";
 
     @Override
@@ -33,7 +33,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-
+        detailId = findViewById(R.id.detailId);
         detailImage = findViewById(R.id.detailImage);
         detailTitle = findViewById(R.id.detailTitle);
         deleteButton = findViewById(R.id.deleteButton);
@@ -43,7 +43,8 @@ public class DetailsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             //detailDesc.setText(bundle.getString("Apellido"));
-            id = bundle.getInt("Id");
+            id = bundle.getString("Id");
+            detailId.setText("Id: "+id);
             detailTitle.setText(bundle.getString("Nombre")+" "+bundle.getString("Apellido"));
             nombre = bundle.getString("Nombre");
             apellido = bundle.getString("Apellido");
@@ -75,6 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DetailsActivity.this, UpdateActivity.class)
+                        .putExtra("Id", id)
                         .putExtra("Nombre", nombre)
                         .putExtra("Apellido", apellido)
                         .putExtra("Fecha", fecha)

@@ -71,8 +71,8 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/lavender_border"
                 android:gravity="start|center_vertical"
+                android:hint="Fecha de nacimiento"
                 android:padding="16dp"
-                android:text="Ingrese su fecha de nacimiento"
                 android:textColor="@color/lavender" />
 
             <Button

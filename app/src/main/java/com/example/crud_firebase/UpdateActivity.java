@@ -35,7 +35,9 @@ public class UpdateActivity extends AppCompatActivity {
     ImageView updateImage;
     Button updateButton;
     EditText updateDesc, updateTitle, updateLang, updateId;
-    String nombre, apellido, fecha,id;
+    String id;
+    String nombre, apellido, fecha, idP;
+
     String imageUrl;
     String key, oldImageURL;
     Uri uri;
@@ -72,6 +74,7 @@ public class UpdateActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             Glide.with(UpdateActivity.this).load(bundle.getString("Image")).into(updateImage);
+            id = bundle.getString("Id");
             updateTitle.setText(bundle.getString("Nombre"));
             updateDesc.setText(bundle.getString("Apellido"));
             updateLang.setText(bundle.getString("Fecha"));
@@ -91,46 +94,45 @@ public class UpdateActivity extends AppCompatActivity {
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
-                builder.setCancelable(false);
-                builder.setView(R.layout.progress_layout);
-                AlertDialog dialog = builder.create();
-                dialog.show();
+
                 saveData();
-                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
-                startActivity(intent);
-                dialog.show();
             }
         });
     }
     public void saveData(){
-        storageReference = FirebaseStorage.getInstance().getReference().child("Imagenes").child(uri.getLastPathSegment());
-
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
         builder.setCancelable(false);
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
-                Uri urlImage = uriTask.getResult();
-                imageUrl = urlImage.toString();
-                updateData();
-                dialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-            }
-        });
-    }
-    public void updateData(){
+        if(uri != null){
+            storageReference = FirebaseStorage.getInstance().getReference().child("Imagenes").child(uri.getLastPathSegment());
 
+            storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isComplete());
+                    Uri urlImage = uriTask.getResult();
+                    imageUrl = urlImage.toString();
+                    updateData();
+                    dialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            imageUrl = oldImageURL;
+            updateData();
+            dialog.dismiss();
+        }
+    }
+
+    public void updateData(){
         nombre = updateTitle.getText().toString().trim();
         apellido = updateDesc.getText().toString().trim();
         fecha = updateLang.getText().toString();
@@ -144,6 +146,8 @@ public class UpdateActivity extends AppCompatActivity {
                     StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
                     reference.delete();
                     Toast.makeText(UpdateActivity.this, "Actualizado Correctamente", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                    startActivity(intent);
                     finish();
                 }
             }

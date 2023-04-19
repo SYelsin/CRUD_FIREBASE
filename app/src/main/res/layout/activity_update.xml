@@ -28,10 +28,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Data"
-                android:textSize="30sp"
+                android:text="Actualizar"
                 android:textAlignment="center"
-                android:textColor="@color/lavender"/>
+                android:textColor="@color/lavender"
+                android:textSize="30sp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/lavender_border"
                 android:gravity="start|center_vertical"
-                android:hint="Enter topic name"
+                android:hint="Nombre"
                 android:padding="16dp"
                 android:textColor="@color/lavender" />
 
@@ -59,7 +59,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/lavender_border"
                 android:gravity="start|center_vertical"
-                android:hint="Enter description"
+                android:hint="Apellido"
                 android:padding="16dp"
                 android:textColor="@color/lavender" />
 
@@ -70,18 +70,18 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/lavender_border"
                 android:gravity="start|center_vertical"
-                android:hint="Enter language"
+                android:hint="Fecha Nacimiento"
                 android:padding="16dp"
                 android:textColor="@color/lavender" />
 
             <Button
+                android:id="@+id/updateButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Update"
-                android:id="@+id/updateButton"
-                android:textSize="18sp"
                 android:layout_marginTop="20dp"
-                app:cornerRadius = "20dp"/>
+                android:text="Actualizar"
+                android:textSize="18sp"
+                app:cornerRadius="20dp" />
 
         </LinearLayout>
 
